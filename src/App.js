@@ -5,7 +5,7 @@ import { gql } from 'apollo-boost';
 // list todos
 const GET_TODOS = gql`
   query getTodos {
-    todos_todos {
+    todos {
       done
       id
       text
@@ -15,7 +15,7 @@ const GET_TODOS = gql`
 // toggle todos
 const TOGGLE_TODO = gql`
   mutation toggleTodos($id: uuid!, $done: Boolean!) {
-    update_todos_todos(where: { id: { _eq: $id } }, _set: { done: $done }) {
+    update_todos(where: { id: { _eq: $id } }, _set: { done: $done }) {
       returning {
         done
         id
@@ -28,7 +28,7 @@ const TOGGLE_TODO = gql`
 // add todos
 const ADD_TODO = gql`
   mutation addTodo($text: String!) {
-    insert_todos_todos(objects: { text: $text }) {
+    insert_todos(objects: { text: $text }) {
       returning {
         done
         id
@@ -41,7 +41,7 @@ const ADD_TODO = gql`
 // delete todos
 const DELETE_TODO = gql`
   mutation deleteTodo($id: uuid!) {
-    delete_todos_todos(where: { id: { _eq: $id } }) {
+    delete_todos(where: { id: { _eq: $id } }) {
       returning {
         done
         id
@@ -82,12 +82,10 @@ function App() {
         variables: { id },
         update: (cache) => {
           const prevData = cache.readQuery({ query: GET_TODOS });
-          const newTodos = prevData.todos_todos.filter(
-            (todo) => todo.id !== id
-          );
+          const newTodos = prevData.todos.filter((todo) => todo.id !== id);
           cache.writeQuery({
             query: GET_TODOS,
-            data: { todos_todos: newTodos },
+            data: { todos: newTodos },
           });
           console.log(prevData);
         },
@@ -120,7 +118,7 @@ function App() {
         </button>
       </form>
       <div className='flex items-center justify-center flex-column'>
-        {data.todos_todos.map((todo) => (
+        {data.todos.map((todo) => (
           <p onDoubleClick={() => handleToggleTodo(todo)} key={todo.id}>
             <span className={`pointer list pa1 f3 ${todo.done && 'strike'}`}>
               {todo.text}
