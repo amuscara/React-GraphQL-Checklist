@@ -6,9 +6,6 @@ import { ApolloProvider } from '@apollo/react-hooks';
 
 const client = new ApolloClient({
   uri: 'https://handy-hawk-14.hasura.app/v1/graphql',
-  headers: {
-    'x-hasura-admin-secret': process.env.REACT_APP_HASURA_SECRET,
-  },
 });
 
 ReactDOM.render(
