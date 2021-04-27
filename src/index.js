@@ -5,7 +5,7 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 const client = new ApolloClient({
-  uri: 'https://handy-hawk-14.hasura.app/v1/graphql',
+  uri: 'https://handy-hawk-14.hasura.app/v1/graphql ',
 });
 
 ReactDOM.render(
